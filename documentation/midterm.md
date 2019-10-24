@@ -6,6 +6,7 @@
             "><h4>
     Tao Xu, Xirui Zhong
     </h4></div>
+    
 ## Background
 
 LA-Traffic-Collision-Inspector is a web application that help people to inspect if the traffic collisions are related to certain factors such as gender, time occurred location etc. It support filtering, searching, and sorting  for better user experience. In order to let use get a better view of dataset, the user interface will consist of a map for data visualization.
