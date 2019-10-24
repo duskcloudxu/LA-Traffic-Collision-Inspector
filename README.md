@@ -1,5 +1,7 @@
 # Los Angeles Traffic Collision Viewer
-
+![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)
+![badage](https://img.shields.io/badge/React-v16.10.0-blue)
+![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)
 ## Introduction
 
 A web app based on dataset [“Los Angeles traffic collision data"](<https://www.kaggle.com/cityofLA/los-angeles-traffic-collision-data>)  with data sorting, filtering feature and some visualization.
@@ -8,15 +10,46 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
 
 ### Naming Convention
 
-- For CSS/Less document, use [BEM](<http://getbem.com/introduction/>) 
-- For variables, use [little caramel-case](<http://wiki.c2.com/?LowerCamelCase>)
-- For react components, use big caramel-case(Actually React require users use big caramel-case)
+- For CSS/Less document, use `[BEM]`(<http://getbem.com/introduction/>) 
+- For variables, use `[little caramel-case]`(<http://wiki.c2.com/?LowerCamelCase>)
+- For react components, use `big caramel-case`(Actually React require users use big caramel-case)
 
 ### Building Philosophy
 1. Use [`React-Hook`](https://reactjs.org/docs/hooks-intro.html)
+2. Less coupling more cohesion
+
+### Recommend Tooles
+- Jetbrain webstorm
+
+### Remaining Work
+- Build Front-end UI(Xirui Zhong)
+    -Based on Ant Design Table Component
+    #### Requirements
+    - Use `[custom theme]`(https://ant.design/docs/react/customize-theme-cn)
+  
+    DDL: 10/27
+    
+- Build backend Query function(Tao Xu)
+    - Based On Firestore API
+    #### Requirements
+    - support `filtering`, `sorting` features for each column.
+    
+    DDL: 10/27
+- implement Data Visualization DEMO(Tao Xu)
+    - Based on D3.js
+    #### Requirements
+    - show the distribution of events on the LA map
+    - good user experience
+    
+- mobile device compatibility(Xirui Zhong)
+    - better user experience on mobile device
+    DDL: TBD
+
+- cloud function(Tao Xu)
+    - use cloud function of firebase
+    DDL:TBD
 
 
-### structure
 
 ## Npm Scripts
 
