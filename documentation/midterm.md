@@ -49,3 +49,7 @@ The Second part is Firestore communication module, where we encapsulate all the 
 - Implement Data Visualization by D3.js
 - Build mobile device compatitbility
 - Implement cloud function
+
+## Challenges
+
+We did have some issues with task distributions and time conflicts since we didn't talk too much about how and when should we complete our assignments. But we finally figured out a way to finish the project more efficiently to finish the tasks on time. Also, in this project we had trouble to load 100 thousands rows of data into firebase database. After several attemps, we decided to choose cloud firestore instead of firebase and the result was better than before. Loading huge amount of data into firebase is the big challenge for us, and we will keep looking if there are some other ways to relief this data transmission issue.
