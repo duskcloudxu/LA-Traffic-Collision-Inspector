@@ -9,7 +9,7 @@
     
 ## Background
 
-LA-Traffic-Collision-Inspector is a web application that help people to inspect if the traffic collisions are related to certain factors such as gender, time occurred location etc. It support filtering, searching, and sorting  for better user experience. In order to let use get a better view of dataset, the user interface will consist of a map for data visualization.
+LA-Traffic-Collision-Inspector is a web application that can help people to inspect if the traffic collisions are related to certain factors such as gender, time occurred location, etc. It supports filtering, searching, and sorting for better user experience. In order to let use get a better view of dataset, the user interface will consist of a map for data visualization.
 
 ## Completed Task
 
@@ -22,11 +22,11 @@ LA-Traffic-Collision-Inspector is a web application that help people to inspect 
 
 ![1571948670942](assets/1571948670942.png)
 
-We build this application based on ReactJS, and use Redux as data manipulation tools. User's action would trigger Communication Module and use RESTful API to request data from Firebase. After the data is retrieved. It would be updated in Redux, and the content on webpage would be updated in the real time. 
+We built this application based on ReactJS, and used Redux as data manipulation tools. Users's action will trigger Communication Module and use RESTful API to request data from Firebase. After the data is retrieved. It will be updated in Redux, and the content on webpage will be updated in the real time. 
 
 ## Data Cleaning or Analyzing
 
-We downloaded the CSV document from Kaggle, and used Python to parse and analyze the raw data. In raw format, all the data fields are in format of string, which would be a problem in sorting since the sorting rules of string is different from numbers. We transferred part of data fields to integer and parsed the longitude and latitude of accidents from text content of "Location" data field in raw data to the float format.
+We downloaded the CSV document from Kaggle, and used Python to parse and analyze the raw data. In raw format, all the data fields were in format of string, which would be a problem in sorting since the sorting rules of string is different from numbers. We transferred part of data fields to integer and parsed the longitude and latitude of accidents from text content of "Location" data field in raw data to the float format.
 
 ![1571948693591](assets/1571948693591.png)
 
@@ -34,7 +34,7 @@ We downloaded the CSV document from Kaggle, and used Python to parse and analyze
 
 ## Frontend DEMO
 
-We build the web application based on ReactJS. The frontend project has two main parts, the first is user view which basically based on ant design. it basically support sorting and filtering features on the data loaded in the webpage.
+We built the web application based on ReactJS. The frontend project has two main parts, the first is user view which is based on ant design. it basically supports sorting and filtering features on the data loaded in the webpage.
 
 ![midtermPresentation](./midtermPresentation.gif)
 
