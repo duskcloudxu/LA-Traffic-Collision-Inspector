@@ -1,7 +1,6 @@
 import React from 'react';
 // import 'antd/dist/antd.css';
 import { Table, Input, Button, Icon } from 'antd';
-// import logo from './logo.svg';
 import {load100RecordInNormal} from "./communications/firebase";
 // import './App.css';
 import data from './sampleData.json';
@@ -57,14 +56,6 @@ class App extends React.Component {
                 setTimeout(() => this.searchInput.select());
             }
         },
-        // render: text => (
-        //     <Highlighter
-        //         highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
-        //         searchWords={[this.state.searchText]}
-        //         autoEscape
-        //         textToHighlight={text.toString()}
-        //     />
-        // ),
     });
 
     handleSearch = (selectedKeys, confirm) => {
@@ -81,16 +72,18 @@ class App extends React.Component {
     render() {
         const columns = [
             {
+                // string
                 title: 'Address',
                 width: 200,
                 dataIndex: 'Address',
                 // key: 'Address',
                 fixed: 'left',
-                sorter: (a, b) => a.Address.length - b.Address.length,
-                sortDirections: ['descend', 'ascend'],
+                sorter: (a, b) => a["Address"].length - b["Address"].length,
+                // sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('Address'),
             },
             {
+                // int
                 title: 'Area ID',
                 width: 100,
                 dataIndex: 'Area ID',
@@ -100,6 +93,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Area ID'),
             },
             {
+                // string
                 title: 'Area Name',
                 dataIndex: 'Area Name',
                 // key: '1',
@@ -108,6 +102,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Area Name'),
             },
             {
+                // int
                 title: 'Census Tracts',
                 dataIndex: 'Census Tracts',
                 // key: '2',
@@ -116,6 +111,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Census Tracts'),
             },
             {
+                // int
                 title: 'Council Districts',
                 dataIndex: 'Council Districts',
                 // key: '3',
@@ -124,6 +120,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Census Tracts'),
             },
             {
+                // int
                 title: 'Crime Code',
                 dataIndex: 'Crime Code',
                 // key: '4',
@@ -132,6 +129,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Crime Code'),
             },
             {
+                // string
                 title: 'Crime Code Description',
                 dataIndex: 'Crime Code Description',
                 // key: '5',
@@ -140,32 +138,34 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Crime Code Description'),
             },
             {
+                // string
                 title: 'Cross Street',
                 dataIndex: 'Cross Street',
                 // key: '6',
                 width: 150,
-                sorter: (a,b) => a['Cross Street'] - b['Cross Street'],
+                sorter: (a,b) => a['Cross Street'].length - b['Cross Street'].length,
                 ...this.getColumnSearchProps('Cross Street'),
             },
             {
+                // string
                 title: 'Date Occurred',
                 dataIndex: 'Date Occurred',
                 // key: '7',
                 width: 200,
-                sorter: (a,b) => a['Date Occurred'] - b['Date Occurred'],
+                sorter: (a, b) => { return a['Date Occurred'].localeCompare(b['Date Occurred'])},
                 ...this.getColumnSearchProps('Date Occurred'),
-                // TODO need to change the sorting function
             },
             {
+                // string
                 title: 'Date Reported',
                 dataIndex: 'Date Reported',
                 // key: '7',
                 width: 200,
-                sorter: (a,b) => a['Date Reported'] - b['Date Reported'],
+                sorter: (a, b) => { return a['Date Reported'].localeCompare(b['Date Occurred'])},
                 ...this.getColumnSearchProps('Date Reported'),
-                // TODO need to change the sorting function
             },
             {
+                // This column should be int because it includes numbers only
                 title: 'LA Specific Plans',
                 dataIndex: 'LA Specific Plans',
                 // key: '7',
@@ -174,6 +174,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('LA Specific Plans'),
             },
             {
+                // int
                 title: 'Neighborhood Councils (Certified)',
                 dataIndex: 'Neighborhood Councils (Certified)',
                 // key: '7',
@@ -182,6 +183,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Neighborhood Councils (Certified)'),
             },
             {
+                // int
                 title: 'Precinct Boundaries',
                 dataIndex: 'Precinct Boundaries',
                 // key: '7',
@@ -190,6 +192,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Precinct Boundaries'),
             },
             {
+                // int
                 title: 'Premise Code',
                 dataIndex: 'Premise Code',
                 // key: '7',
@@ -198,6 +201,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Premise Code'),
             },
             {
+                // string
                 title: 'Premise Description',
                 dataIndex: 'Premise Description',
                 // key: '7',
@@ -206,6 +210,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Premise Description'),
             },
             {
+                // int
                 title: 'Reporting District',
                 dataIndex: 'Reporting District',
                 // key: '7',
@@ -214,6 +219,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Reporting District'),
             },
             {
+                // int
                 title: 'Time Occurred',
                 dataIndex: 'Time Occurred',
                 // key: '7',
@@ -222,6 +228,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Time Occurred'),
             },
             {
+                // int
                 title: 'Victim Age',
                 dataIndex: 'Victim Age',
                 // key: '7',
@@ -230,24 +237,26 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Victim Age'),
             },
             {
+                // string
                 title: 'Victim Descent',
                 dataIndex: 'Victim Descent',
                 // key: '7',
                 width: 150,
-                sorter: (a,b) => a['Victim Descent'] - b['Victim Descent'],
+                sorter: (a, b) => { return a['Victim Descent'].localeCompare(b['Victim Descent'])},
                 ...this.getColumnSearchProps('Victim Descent'),
-                // TODO change sorting function
             },
             {
+                // string
                 title: 'Victim Sex',
                 dataIndex: 'Victim Sex',
                 // key: '7',
                 width: 150,
-                sorter: (a,b) => a['Victim Sex'] - b['Victim Sex'],
+                // JavaScript String#localeCompare function
+                sorter: (a, b) => { return a['Victim Sex'].localeCompare(b['Victim Sex'])},
                 ...this.getColumnSearchProps('Victim Sex'),
-                // TODO change sorting function
             },
             {
+                // int
                 title: 'Zip Codes',
                 dataIndex: 'Zip Codes',
                 // key: '7',
@@ -257,6 +266,7 @@ class App extends React.Component {
                 ...this.getColumnSearchProps('Zip Codes'),
             },
             {
+                // int
                 title: 'index',
                 dataIndex: 'index',
                 // key: '7',
