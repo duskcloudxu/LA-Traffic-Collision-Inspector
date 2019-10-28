@@ -1,9 +1,9 @@
 import React from 'react';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { Table, Input, Button, Icon } from 'antd';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import {load100RecordInNormal} from "./communications/firebase";
-import './App.css';
+// import './App.css';
 import data from './sampleData.json';
 
 class App extends React.Component {
