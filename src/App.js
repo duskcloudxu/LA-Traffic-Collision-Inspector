@@ -1,24 +1,107 @@
 import React from 'react';
 // import 'antd/dist/antd.css';
-import { Table, Input, Button, Icon } from 'antd';
-import {load100RecordInNormal} from "./communications/firebase";
+import {Table, Input, Button, Icon, Slider, DatePicker} from 'antd';
+import {connect} from 'react-redux'
 // import './App.css';
 import data from './sampleData.json';
+import {clearList, filterList, updateList} from "./action/action";
+import Axios from "axios";
+import Spin from "antd/es/spin";
+
+const {RangePicker} = DatePicker;
 
 class App extends React.Component {
     constructor() {
         super();
-        console.log(load100RecordInNormal(1))
-
+        Axios.get("http://localhost:8081/allData", {
+            headers: {
+                'Access-Control-Allow-Origin': "*"
+            }
+        })
+            .then((res) => {
+                console.log(res.data);
+                this.props.dispatch(updateList(res.data));
+            })
     }
+
 
     state = {
         searchText: '',
+        rangeQuery: {
+            "Census Tracts": [0, 2342],
+            "Address": ""
+        },
+        defaultRangeQuery: {
+            "Census Tracts": [0, 2342],
+            "Address": ""
+        }
     };
 
-    getColumnSearchProps = dataIndex => ({
+    getRangeSearchProps = dataIndex => ({
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
             <div style={{padding: 8}}>
+                <Slider range max={2342} min={0}
+                        value={[this.state.rangeQuery[dataIndex][0], this.state.rangeQuery[dataIndex][1]]}
+                        defaultValue={[0, 2342]}
+                        onChange={value => {
+                            let newState = {...this.state};
+                            newState.rangeQuery[dataIndex] = value;
+                            this.setState(newState);
+                        }}
+                        onAfterChange={(value) => this.handleRangeQuery(value, dataIndex)}/>
+                <Button
+                    type="primary"
+                    onClick={() => this.handleFilter(selectedKeys, confirm)}
+                    icon="filter"
+                    size="small"
+                    style={{width: 90, marginRight: 8, marginBottom: 8}}
+                >
+                    Filter
+                </Button>
+
+                <Button onClick={() => this.handleReset(dataIndex, clearFilters)} size="small" style={{width: 90}}>
+                    Reset
+                </Button>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={(e) => {
+                        let newState = {...this.state};
+                        newState.rangeQuery[dataIndex] = [e.target.value, e.target.value];
+                        this.setState(newState);
+                        this.updateFilterData();
+                    }}
+                    style={{width: 188, marginBottom: 8, display: 'block'}}
+                />
+            </div>
+        ),
+        filterIcon: filtered => (
+            <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}}/>
+        ),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+    });
+    getDateSearchProps = dataIndex => ({
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+            <div style={{padding: 8}}>
+                <RangePicker format={"YYYY-MM-DD"} style={{display: "block"}}
+                             onChange={(date) => this.handleRangeQuery(date, dataIndex)}/>
+                <Button
+                    type="primary"
+                    onClick={() => this.handleFilter(selectedKeys, confirm)}
+                    icon="filter"
+                    size="small"
+                    style={{width: 90, marginRight: 8, marginBottom: 8, marginTop: 8}}
+                >
+                    Filter
+                </Button>
                 <Input
                     ref={node => {
                         this.searchInput = node;
@@ -46,11 +129,42 @@ class App extends React.Component {
         filterIcon: filtered => (
             <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}}/>
         ),
-        onFilter: (value, record) =>
-            record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+    });
+    getStringSearchProps = dataIndex => ({
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+            <div style={{padding: 8}}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm,dataIndex)}
+                    style={{width: 188, marginBottom: 8, display: 'block'}}
+                />
+                <Button
+                    type="primary"
+                    onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    icon="search"
+                    size="small"
+                    style={{width: 90, marginRight: 8}}
+                >
+                    Search
+                </Button>
+                <Button onClick={() => this.handleReset(dataIndex, clearFilters)} size="small" style={{width: 90}}>
+                    Reset
+                </Button>
+            </div>
+        ),
+        filterIcon: filtered => (
+            <Icon type="search" style={{color: filtered ? '#1890ff' : undefined}}/>
+        ),
         onFilterDropdownVisibleChange: visible => {
             if (visible) {
                 setTimeout(() => this.searchInput.select());
@@ -58,18 +172,61 @@ class App extends React.Component {
         },
     });
 
-    handleSearch = (selectedKeys, confirm) => {
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        let newQuery = this.state.rangeQuery;
+        newQuery[dataIndex] = selectedKeys[0];
+        this.setState({...this.state, "rangeQuery": newQuery});
         confirm();
-        this.setState({searchText: selectedKeys[0]});
+        this.updateFilterData();
     };
 
-    handleReset = clearFilters => {
-        clearFilters();
-        this.setState({searchText: ''});
+    handleReset = (dataIndex, clearFilter) => {
+        let newQuery = this.state.rangeQuery;
+        newQuery[dataIndex] = this.state.defaultRangeQuery[dataIndex];
+        this.setState({...this.state, "rangeQuery": newQuery});
+        this.updateFilterData();
+        clearFilter();
+
     };
+
+    handleRangeQuery(value, dataIndex) {
+        let newRangeQuery = this.state.rangeQuery;
+        newRangeQuery[dataIndex] = value;
+        if (dataIndex === "Date Occurred") {
+            newRangeQuery[dataIndex] = newRangeQuery[dataIndex].map(item => item.toDate())
+        }
+        this.setState({...this.state, "rangeQuery": newRangeQuery});
+
+    }
+
+    handleFilter(_, confirm) {
+        this.updateFilterData();
+        confirm();
+    }
+
+    updateFilterData = () => {
+        this.props.dispatch(clearList());
+        Axios.get("http://localhost:8081/getDataWithFilter", {
+            headers: {
+                'Access-Control-Allow-Origin': "*"
+            },
+            params: {
+                query: this.state.rangeQuery
+            }
+        })
+            .then((res) => {
+                this.props.dispatch(updateList(res.data));
+            });
+    }
+
+    handleChange(pagination, filter, sorter) {
+
+
+    }
 
 //filter function
     render() {
+        let metaData = this.props.metaData;
         const columns = [
             {
                 // string
@@ -77,10 +234,11 @@ class App extends React.Component {
                 width: 200,
                 dataIndex: 'Address',
                 // key: 'Address',
-                fixed: 'left',
-                sorter: (a, b) => a["Address"].length - b["Address"].length,
-                // sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('Address'),
+                sorter: (a, b) => {
+                    return a.Address.localeCompare(b.Address)
+                },
+                sortDirections: ['descend', 'ascend'],
+                ...this.getStringSearchProps("Address")
             },
             {
                 // int
@@ -88,63 +246,30 @@ class App extends React.Component {
                 width: 100,
                 dataIndex: 'Area ID',
                 // key: 'Area ID',
-                fixed: 'left',
-                sorter: (a,b) => a['Area ID'] - b['Area ID'],
-                ...this.getColumnSearchProps('Area ID'),
+                sorter: (a, b) => a["Area ID"] - b["Area ID"],
+                filters: (Array(metaData.rangeOfAreaID.end - metaData.rangeOfAreaID.start + 1).fill(0)
+                    .map((item, index) => {
+                        return {
+                            "text": index + metaData.rangeOfAreaID.start,
+                            "value": index + metaData.rangeOfAreaID.start
+                        }
+                    })),
+                onFilter: (value, record) => record["Area ID"] === value
             },
-            {
-                // string
-                title: 'Area Name',
-                dataIndex: 'Area Name',
-                // key: '1',
-                width: 150,
-                sorter: (a,b) => a['Area Name'].length - b['Area Name'].length,
-                ...this.getColumnSearchProps('Area Name'),
-            },
+
             {
                 // int
                 title: 'Census Tracts',
                 dataIndex: 'Census Tracts',
                 // key: '2',
-                width: 150,
-                sorter: (a,b) => a['Census Tracts'] - b['Census Tracts'],
-                ...this.getColumnSearchProps('Census Tracts'),
-            },
-            {
-                // int
-                title: 'Council Districts',
-                dataIndex: 'Council Districts',
-                // key: '3',
-                width: 150,
-                sorter: (a,b) => a['Census Tracts'] - b['Census Tracts'],
-                ...this.getColumnSearchProps('Census Tracts'),
-            },
-            {
-                // int
-                title: 'Crime Code',
-                dataIndex: 'Crime Code',
-                // key: '4',
-                width: 150,
-                sorter: (a,b) => a['Crime Code'] - b['Crime Code'],
-                ...this.getColumnSearchProps('Crime Code'),
-            },
-            {
-                // string
-                title: 'Crime Code Description',
-                dataIndex: 'Crime Code Description',
-                // key: '5',
-                width: 150,
-                sorter: (a,b) => a['Crime Code Description'].length - b['Crime Code Description'].length,
-                ...this.getColumnSearchProps('Crime Code Description'),
-            },
-            {
-                // string
-                title: 'Cross Street',
-                dataIndex: 'Cross Street',
-                // key: '6',
-                width: 150,
-                sorter: (a,b) => a['Cross Street'].length - b['Cross Street'].length,
-                ...this.getColumnSearchProps('Cross Street'),
+                width: 200,
+                sorter: (a, b) => {
+
+                    if (a["Census Tracts"] === "") a["Census Tracts"] = "0";
+                    if (b["Census Tracts"] === "") b["Census Tracts"] = "0";
+                    return a["Census Tracts"] - b["Census Tracts"]
+                },
+                ...this.getRangeSearchProps('Census Tracts'),
             },
             {
                 // string
@@ -152,137 +277,43 @@ class App extends React.Component {
                 dataIndex: 'Date Occurred',
                 // key: '7',
                 width: 200,
-                sorter: (a, b) => { return a['Date Occurred'].localeCompare(b['Date Occurred'])},
-                ...this.getColumnSearchProps('Date Occurred'),
+                sorter: (a, b) => {
+                    return a["Date Occurred"].localeCompare(b["Date Occurred"])
+                },
+                ...this.getDateSearchProps('Date Occurred'),
             },
-            {
-                // string
-                title: 'Date Reported',
-                dataIndex: 'Date Reported',
-                // key: '7',
-                width: 200,
-                sorter: (a, b) => { return a['Date Reported'].localeCompare(b['Date Occurred'])},
-                ...this.getColumnSearchProps('Date Reported'),
-            },
-            {
-                // This column should be int because it includes numbers only
-                title: 'LA Specific Plans',
-                dataIndex: 'LA Specific Plans',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['LA Specific Plans'] - b['LA Specific Plans'],
-                ...this.getColumnSearchProps('LA Specific Plans'),
-            },
-            {
-                // int
-                title: 'Neighborhood Councils (Certified)',
-                dataIndex: 'Neighborhood Councils (Certified)',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Neighborhood Councils (Certified)'] - b['Neighborhood Councils (Certified)'],
-                ...this.getColumnSearchProps('Neighborhood Councils (Certified)'),
-            },
-            {
-                // int
-                title: 'Precinct Boundaries',
-                dataIndex: 'Precinct Boundaries',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Precinct Boundaries'] - b['Precinct Boundaries'],
-                ...this.getColumnSearchProps('Precinct Boundaries'),
-            },
-            {
-                // int
-                title: 'Premise Code',
-                dataIndex: 'Premise Code',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Premise Code'] - b['Premise Code'],
-                ...this.getColumnSearchProps('Premise Code'),
-            },
-            {
-                // string
-                title: 'Premise Description',
-                dataIndex: 'Premise Description',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Premise Description'].length - b['Premise Description'].length,
-                ...this.getColumnSearchProps('Premise Description'),
-            },
-            {
-                // int
-                title: 'Reporting District',
-                dataIndex: 'Reporting District',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Reporting District'] - b['Reporting District'],
-                ...this.getColumnSearchProps('Reporting District'),
-            },
-            {
-                // int
-                title: 'Time Occurred',
-                dataIndex: 'Time Occurred',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Time Occurred'] - b['Time Occurred'],
-                ...this.getColumnSearchProps('Time Occurred'),
-            },
-            {
-                // int
-                title: 'Victim Age',
-                dataIndex: 'Victim Age',
-                // key: '7',
-                width: 150,
-                sorter: (a,b) => a['Victim Age'] - b['Victim Age'],
-                ...this.getColumnSearchProps('Victim Age'),
-            },
-            {
-                // string
-                title: 'Victim Descent',
-                dataIndex: 'Victim Descent',
-                // key: '7',
-                width: 150,
-                sorter: (a, b) => { return a['Victim Descent'].localeCompare(b['Victim Descent'])},
-                ...this.getColumnSearchProps('Victim Descent'),
-            },
-            {
-                // string
-                title: 'Victim Sex',
-                dataIndex: 'Victim Sex',
-                // key: '7',
-                width: 150,
-                // JavaScript String#localeCompare function
-                sorter: (a, b) => { return a['Victim Sex'].localeCompare(b['Victim Sex'])},
-                ...this.getColumnSearchProps('Victim Sex'),
-            },
-            {
-                // int
-                title: 'Zip Codes',
-                dataIndex: 'Zip Codes',
-                // key: '7',
-                width: 150,
-                defaultSortOrder: 'descend',
-                sorter: (a,b) => a['Zip Codes'] - b['Zip Codes'],
-                ...this.getColumnSearchProps('Zip Codes'),
-            },
-            {
-                // int
-                title: 'index',
-                dataIndex: 'index',
-                // key: '7',
-                width: 110,
-                defaultSortOrder: 'descend',
-                sorter: (a, b) => a.index - b.index,
-                fixed: 'right',
-                ...this.getColumnSearchProps('index'),
-            },
+
+
         ];
-        return <Table columns={columns} dataSource={data} onChange={onChange} pagination={{ pageSize: 10 }} scroll={{ x: 1500, y: 480 }} />;
+        if(this.props.isLoaded)return (
+            <div className={"app"}>
+                <Table className={"antdTable"}
+                    columns={columns}
+                    rowKey={record => record.DRNumber}
+                    dataSource={this.props.list}
+                    onChange={this.handleChange}
+                    pagination={{pageSize: 13}}
+                        scroll={{ y: 450}}
+                        size={"middle"}
+
+                />
+            </div>
+        );
+        else return(
+            <div className={"app"}>
+                <Spin size={"large"} className={"spin"}/>
+            </div>
+        )
     }
 }
 
-function onChange(pagination, filters, sorter, extra) {
-    console.log('params', pagination, filters, sorter, extra);
+
+function mapStateToProps(state) {
+    return {
+        list: state.list,
+        metaData: state.metaData,
+        isLoaded:state.isLoaded
+    }
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

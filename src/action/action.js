@@ -1,7 +1,14 @@
-function updateList(data){
+function filterList(rangeQuery){
     return{
-        "type":"updateList",
-        "data":data
+        "type":"filterList",
+        "rangeQuery":rangeQuery
     }
 }
-export {updateList}
+var updateList=data=>({
+    type:'updateList',
+    data:data
+})
+var clearList=data=>({
+    type:'clearList',
+})
+export {filterList,updateList,clearList}

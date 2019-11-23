@@ -19,11 +19,27 @@ let db = firebase.firestore();
 let dataRef = db.collection("/data");
 
 async function load100RecordInNormal(pagination, filters, sorter, extra) {
-    dataRef.get()
+    let sortingBy = "Address";//default sorting field
+    let sortingRule = "asc";//default sorting value
+    if (sorter && sorter.order) {
+        sortingBy = sorter.columnKey;
+        sortingRule = sorter.order === "ascend" ? "asc" : "desc";
+    }
+    let searchHandle = dataRef;
+    if (filters)
+        Object.keys(filters).forEach(item=>{
+            filters[item].forEach(option=>{
+                searchHandle = searchHandle.where(item, "==", option);
+            })
+        });
+
+    searchHandle.orderBy(sortingBy, sortingRule)
+        .limit(100);
+
+    searchHandle.get()
         .then(res => {
             let data = [];
             res.forEach(doc => data.push(doc.data()));
-            window.allData=data;
             store.dispatch(updateList(data));
         })
 }
