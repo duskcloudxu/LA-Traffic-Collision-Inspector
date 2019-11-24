@@ -78,7 +78,7 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
 Before start the front end, start server script first. This script is under `root/server` by the name `middle-tier_server.js`, use
 
 ```powershell
-nodes ./middle-tier_server.js
+node ./middle-tier_server.js
 ```
 
 or any tools based on NodeJS environment to start this backend server.
