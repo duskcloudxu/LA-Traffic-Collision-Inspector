@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux'
 import './index.css';
 import App from './App';
+import MyEcharts from './components/MyEcharts'
 import Test from './Test'
 import store from './redux'
 import * as serviceWorker from './serviceWorker';
@@ -22,6 +23,8 @@ ReactDOM.render(
             <Switch>
                 <Route exact path={"/app"}>
                     <App></App>
+
+
                 </Route>
                 <Route path={"/test"}>
                     <Test></Test>

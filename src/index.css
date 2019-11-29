@@ -9,27 +9,39 @@ body {
   background-color: #393e46 !important;
 }
 body #root {
-  width: 80%;
-  height: calc(100% - 40px);
+  width: 100%;
+  height: calc(100% - 30px);
   overflow: hidden;
   padding: 20px;
   margin: 20px;
   border-radius: 20px;
+  display: flex;
   background-color: #30303d;
 }
 body #root .app {
   display: flex;
   align-content: center;
-  justify-content: center;
+  justify-content: left;
   background-color: #30303d;
+  width: 100%;
+}
+body #root .app .chartBar {
+  display: flex;
+  margin-left: 30px;
+  background-color: #333333;
+  border-radius: 20px;
+  padding: 20px;
+  width: calc(40% - 30px);
+  height: 100%;
+  flex-direction: column;
 }
 body #root .app .antdTable {
-  width: 100%;
+  width: 70%;
   border-radius: 20px;
 }
 body #root .app .spin {
   position: absolute;
-  left: calc(50% - 100px);
-  top: calc(50% - 50px);
+  left: calc(50%);
+  top: calc(50%);
 }
 /*# sourceMappingURL=index.css.map */

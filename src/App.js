@@ -7,6 +7,7 @@ import data from './sampleData.json';
 import {clearList, filterList, updateList} from "./action/action";
 import Axios from "axios";
 import Spin from "antd/es/spin";
+import MyEcharts from "./components/MyEcharts";
 
 const {RangePicker} = DatePicker;
 
@@ -145,7 +146,7 @@ class App extends React.Component {
                     placeholder={`Search ${dataIndex}`}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => this.handleSearch(selectedKeys, confirm,dataIndex)}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
                     style={{width: 188, marginBottom: 8, display: 'block'}}
                 />
                 <Button
@@ -233,6 +234,7 @@ class App extends React.Component {
                 title: 'Address',
                 width: 200,
                 dataIndex: 'Address',
+                // key: 'Address',
                 sorter: (a, b) => {
                     return a.Address.localeCompare(b.Address)
                 },
@@ -244,6 +246,7 @@ class App extends React.Component {
                 title: 'Area ID',
                 width: 100,
                 dataIndex: 'Area ID',
+                // key: 'Area ID',
                 sorter: (a, b) => a["Area ID"] - b["Area ID"],
                 filters: (Array(metaData.rangeOfAreaID.end - metaData.rangeOfAreaID.start + 1).fill(0)
                     .map((item, index) => {
@@ -259,6 +262,7 @@ class App extends React.Component {
                 // int
                 title: 'Census Tracts',
                 dataIndex: 'Census Tracts',
+                // key: '2',
                 width: 200,
                 sorter: (a, b) => {
 
@@ -272,6 +276,7 @@ class App extends React.Component {
                 // string
                 title: 'Date Occurred',
                 dataIndex: 'Date Occurred',
+                // key: '7',
                 width: 200,
                 sorter: (a, b) => {
                     return a["Date Occurred"].localeCompare(b["Date Occurred"])
@@ -281,23 +286,28 @@ class App extends React.Component {
 
 
         ];
-        if(this.props.isLoaded)return (
+        if (this.props.isLoaded) return (
             <div className={"app"}>
                 <Table className={"antdTable"}
-                    columns={columns}
-                    rowKey={record => record.DRNumber}
-                    dataSource={this.props.list}
-                    onChange={this.handleChange}
-                    pagination={{pageSize: 13}}
-                        scroll={{ y: 450}}
-                        size={"middle"}
+                       columns={columns}
+                       rowKey={record => record.DRNumber}
+                       dataSource={this.props.list}
+                       onChange={this.handleChange}
+                       pagination={{pageSize: 13}}
+                       scroll={{y: 450}}
+                       size={"middle"}
 
                 />
+                <div className={"chartBar"}>
+                    <MyEcharts dataIndex={"Date Occurred"} chartType={"lineChartForDate"}/>
+                    <MyEcharts dataIndex={"Area ID"} chartType={"pieChart"}/>
+                </div>
             </div>
         );
-        else return(
+        else return (
             <div className={"app"}>
                 <Spin size={"large"} className={"spin"}/>
+
             </div>
         )
     }
@@ -308,7 +318,7 @@ function mapStateToProps(state) {
     return {
         list: state.list,
         metaData: state.metaData,
-        isLoaded:state.isLoaded
+        isLoaded: state.isLoaded
     }
 }
 

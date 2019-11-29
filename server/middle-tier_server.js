@@ -28,6 +28,7 @@ app.get("/getDataWithFilter", (req, res) => {
     isFirstTime=false;
     let { query } = req.query;
     query=JSON.parse(query);
+
     let rangeDataIndexs = Object.keys( JSON.parse(req.query.query));
     let filteredData = sudoData.filter(item => {
         for (let i = 0; i < rangeDataIndexs.length; i++) {
@@ -42,14 +43,15 @@ app.get("/getDataWithFilter", (req, res) => {
             }
             else if(dataIndex==="Address"){
                 let pattern=query[dataIndex];
-                if(flag)console.log(pattern);
-                flag=false;
-                return item[dataIndex].toLowerCase().indexOf(pattern.toLowerCase())!=-1;
+                if( item[dataIndex].toLowerCase().indexOf(pattern.toLowerCase())==-1){
+                    return false;
+                }
             }
             else if (item[dataIndex] < query[dataIndex][0] || item[dataIndex] > query[dataIndex][1])
                 return false;
         }
         return true;
+
     })
     res.send(filteredData);
 

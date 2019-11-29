@@ -1,88 +1,53 @@
 import React from 'react';
 import {Table} from 'antd';
-import axios from 'axios'
+import Axios from 'axios'
+import ReactEcharts from 'echarts-for-react'
+import {connect} from "react-redux";
+import {updateList} from "./action/action";
+import MyEcharts from './components/MyEcharts'
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        sorter: true,
-        render: name => `${name.first} ${name.last}`,
-        width: '20%',
-    },
-    {
-        title: 'Gender',
-        dataIndex: 'gender',
-        filters: [{text: 'Male', value: 'male'}, {text: 'Female', value: 'female'}],
-        width: '20%',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-    },
-];
 
 class Test extends React.Component {
-    state = {
-        data: [],
-        pagination: {},
-        loading: false,
-    };
 
-    componentDidMount() {
-        this.fetch();
+
+    constructor() {
+        super();
+        Axios.get("http://localhost:8081/allData", {
+            headers: {
+                'Access-Control-Allow-Origin': "*"
+            }
+        })
+            .then((res) => {
+                this.props.dispatch(updateList(res.data));
+            })
     }
 
-    handleTableChange = (pagination, filters, sorter) => {
-        console.log("parameter this time");
-        console.log(pagination,filters,sorter)
-        const pager = {...this.state.pagination};
-        pager.current = pagination.current;
-        this.setState({
-            pagination: pager,
-        });
-        this.fetch({
-            results: pagination.pageSize,
-            page: pagination.current,
-            sortField: sorter.field,
-            sortOrder: sorter.order,
-            ...filters,
-        });
-    };
+    componentDidMount() {
+    }
 
-    fetch = (params = {}) => {
-        this.setState({loading: true});
-        axios.get("https://randomuser.me/api/",{
-            data: {
-                results: 10,
-                ...params,
-            },
-            dataType: 'json',
-        }).then(data => {
-            const pagination = {...this.state.pagination};
-            // Read total count from server
-            // pagination.total = data.totalCount;
-            pagination.total = 200;
-            this.setState({
-                loading: false,
-                data: data.data.results,
-                pagination,
-            });
-        });
-    };
 
     render() {
         return (
-            <Table
-                columns={columns}
-                rowKey={record => record.login.uuid}
-                dataSource={this.state.data}
-                pagination={this.state.pagination}
-                loading={this.state.loading}
-                onChange={this.handleTableChange}
-            />
-        );
+            <div style={{display: "flex"}}>
+
+                <MyEcharts dataIndex={"Date Occurred"} chartType={"lineChartForDate"}/>
+            </div>
+
+        )
+            ;
     }
 }
 
-export default Test;
+function
+
+mapStateToProps(state) {
+    return {
+        list: state.list
+    }
+}
+
+export default connect(mapStateToProps)
+(
+    Test
+)
+;
