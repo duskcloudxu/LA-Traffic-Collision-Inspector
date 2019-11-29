@@ -43,23 +43,26 @@
       // draws it.
       function drawChart() {
         $.ajax({
-          url: "sampleData.json",
+          url: "testData.json",
           dataType: "json",
           type: "GET",
           contentType: "application/json; charset=utf-8",
           success: function (data) {
-            var arrSales = [['Index']];    // Define an array and assign columns for the chart.
+            var arrSales = [['Area ID']];    // Define an array and assign columns for the chart.
             // alert(arrSales[0][0])
 
             // Loop through each data and populate the array.
             $.each(data, function (index, value) {
               // arrSales.push([value.index["Address"], value.index]);
-              arrSales.push([value.index]);
+              // TODO 无法使用除DRNumber之外的属性
+              // TODO 将图表移动到指定位置
+              arrSales.push([value.DRNumber]);
+              // arrSales.push([value.index["Area ID"]]);
             });
 
             // Set chart Options.
             var options = {
-              title: 'Monthly Sales',
+              title: 'Histogram',
               curveType: 'function',
               legend: { position: 'bottom', textStyle: { color: '#555', fontSize: 14} }  // You can position the legend on 'top' or at the 'bottom'.
             };
