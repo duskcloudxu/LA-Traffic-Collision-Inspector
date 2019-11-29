@@ -233,7 +233,6 @@ class App extends React.Component {
                 title: 'Address',
                 width: 200,
                 dataIndex: 'Address',
-                // key: 'Address',
                 sorter: (a, b) => {
                     return a.Address.localeCompare(b.Address)
                 },
@@ -245,7 +244,6 @@ class App extends React.Component {
                 title: 'Area ID',
                 width: 100,
                 dataIndex: 'Area ID',
-                // key: 'Area ID',
                 sorter: (a, b) => a["Area ID"] - b["Area ID"],
                 filters: (Array(metaData.rangeOfAreaID.end - metaData.rangeOfAreaID.start + 1).fill(0)
                     .map((item, index) => {
@@ -261,7 +259,6 @@ class App extends React.Component {
                 // int
                 title: 'Census Tracts',
                 dataIndex: 'Census Tracts',
-                // key: '2',
                 width: 200,
                 sorter: (a, b) => {
 
@@ -275,7 +272,6 @@ class App extends React.Component {
                 // string
                 title: 'Date Occurred',
                 dataIndex: 'Date Occurred',
-                // key: '7',
                 width: 200,
                 sorter: (a, b) => {
                     return a["Date Occurred"].localeCompare(b["Date Occurred"])
