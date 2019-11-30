@@ -1,7 +1,6 @@
 # Los Angeles Traffic Collision Viewer
-![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)
-![badage](https://img.shields.io/badge/React-v16.10.0-blue)
-![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)
+![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)![badage](https://img.shields.io/badge/React-v16.10.0-blue)![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)![badage](https://img.shields.io/badge/eCharts-v4.5.0-#8ea6b4)![badage](https://img.shields.io/badge/antd-v3.24.3-#46b3e6)
+
 ## Introduction
 
 A web app based on dataset [“Los Angeles traffic collision data"](<https://www.kaggle.com/cityofLA/los-angeles-traffic-collision-data>)  with data sorting, filtering feature and some visualization.
@@ -22,7 +21,7 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
 - Jetbrain webstorm
 
 ### Remaining Work
-- #### Build Front-end UI(Xirui Zhong)
+- #### Build Front-end UI(Xirui Zhong) :heavy_check_mark:
     -Based on Ant Design Table Component
     
     ##### Requirements
@@ -31,7 +30,7 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
     
     DDL: 10/27
   
-- #### Build backend Query function(Tao Xu)
+- #### Build backend Query function(Tao Xu):heavy_check_mark:
     - Based On Firestore API
     ##### Requirements
     - support `filtering`, `sorting` features for each column.
@@ -42,7 +41,7 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
     
     - The API of Firebase is way too insufficient for even common query pattern, therefore we build a server to handle complex query , like range query and partial query.
     
-- #### Build middle-tier server
+- #### Build middle-tier server:heavy_check_mark:
 
     - In order to analyze complex query and return desired data.
     - make better use of firebase API
@@ -52,26 +51,29 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
 
     - middle-tier server is based on NodeJS and equipped with a REDIS in-memory caching database. Therefore it could help to improve data accessing time.
 
-- #### Build Frontend logic functions (Tao Xu)
+- #### Build Frontend logic functions (Tao Xu):heavy_check_mark:
 
     - customize table component by slider and button component of ANTD
     - implement logic and commutation function of frontend
 
-- #### implement Data Visualization DEMO(Tao Xu)
-    - Based on D3.js
+- #### implement Data Visualization DEMO(Tao Xu):heavy_check_mark:
+    - ~~Based on D3.js~~
+    - Changed to echarts.js of apache software foundatin
     #### Requirements
     - show the distribution of events on the LA map
     - good user experience
     
-- #### mobile device compatibility(Xirui Zhong)
+- #### ~~mobile device compatibility(Xirui Zhong)~~(deprecated)
     - better user experience on mobile device
-    DDL: TBD
+    - canceled due to hardness to design a self-adaptive mechanism to present large tuples on mobile device.
 
-- #### cloud function(Tao Xu)
+- #### ~~cloud function(Tao Xu)~~(deprecated)
     - use cloud function of firebase
-    DDL:TBD
-
-
+    - canceled due to insufficient remaining time and corresponding features.
+    
+- #### data visualizatin ~~carousel~~ option(Tao Xu) :heavy_check_mark:
+    - show different data visualization charts when that area is not focused.
+    
 
 ## Npm Scripts
 

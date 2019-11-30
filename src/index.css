@@ -1,5 +1,15 @@
 *::-webkit-scrollbar {
-  display: none;
+  width: 0px;
+  height: 5px;
+  background-color: #393e46;
+}
+*::-webkit-scrollbar-track {
+  background: #5c636e99;
+  border-radius: 5px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #f2f2f299;
+  border-radius: 5px;
 }
 body {
   display: flex;
@@ -10,7 +20,7 @@ body {
 }
 body #root {
   width: 100%;
-  height: calc(100% - 30px);
+  height: calc(100% - 40px);
   overflow: hidden;
   padding: 20px;
   margin: 20px;
@@ -33,10 +43,16 @@ body #root .app .chartBar {
   padding: 20px;
   width: calc(40% - 30px);
   height: 100%;
-  flex-direction: column;
+  flex-wrap: wrap;
+}
+body #root .app .chartBar .dropdownBtn {
+  margin-left: calc(70%);
+  margin-bottom: -30px;
+  z-index: 1000;
 }
 body #root .app .antdTable {
-  width: 70%;
+  width: 60%;
+  height: 100%;
   border-radius: 20px;
 }
 body #root .app .spin {

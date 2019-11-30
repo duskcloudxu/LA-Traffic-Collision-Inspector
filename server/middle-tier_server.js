@@ -3,13 +3,13 @@ var fs = require('fs');
 var cors = require('cors');
 var app = express();
 var sudoData = [];
-var isFirstTime=true;
+var isFirstTime = true;
 app.use(cors());
 app.get('/', function (req, res) {
     res.send('Hello World');
 })
 app.get('/allData', function (req, res) {
-    isFirstTime=true;
+    isFirstTime = true;
     res.send(sudoData);
 })
 
@@ -20,18 +20,19 @@ app.get('/getDataIndex/:index', function (req, res) {
 })
 
 app.get("/getDataWithFilter", (req, res) => {
-    let flag=true;
-    if(isFirstTime)
-        for(let i=0;i<1000;i++){
+    let flag = true;
+    if (isFirstTime)
+        for (let i = 0; i < 1000; i++) {
             fs.readFileSync("./testData.json");
         }
-    isFirstTime=false;
+    isFirstTime = false;
     let { query } = req.query;
-    query=JSON.parse(query);
+    query = JSON.parse(query);
 
-    let rangeDataIndexs = Object.keys( JSON.parse(req.query.query));
+    let rangeDataIndexs = Object.keys(JSON.parse(req.query.query));
     let filteredData = sudoData.filter(item => {
         for (let i = 0; i < rangeDataIndexs.length; i++) {
+
             let dataIndex = rangeDataIndexs[i];
             if (dataIndex === "Date Occurred") {
                 let curTime = item[dataIndex];
@@ -41,14 +42,19 @@ app.get("/getDataWithFilter", (req, res) => {
                     return false;
 
             }
-            else if(dataIndex==="Address"){
-                let pattern=query[dataIndex];
-                if( item[dataIndex].toLowerCase().indexOf(pattern.toLowerCase())==-1){
+            if (dataIndex === "Address"||dataIndex==="Area Name"||dataIndex==="Victim Descent") {
+                let pattern = query[dataIndex];
+                if (item[dataIndex].toLowerCase().indexOf(pattern.toLowerCase()) == -1) {
                     return false;
                 }
             }
-            else if (item[dataIndex] < query[dataIndex][0] || item[dataIndex] > query[dataIndex][1])
-                return false;
+            if (dataIndex === "Census Tracts"||dataIndex==="DRNumber"||dataIndex==="Time Occurred")
+                if (item[dataIndex] < query[dataIndex][0] || item[dataIndex] > query[dataIndex][1])
+                    return false;
+
+            if (dataIndex === "Area ID") {
+                if (!query[dataIndex].includes(item[dataIndex])) return false;
+            }
         }
         return true;
 
