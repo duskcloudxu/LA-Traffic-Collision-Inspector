@@ -71,7 +71,7 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
     - use cloud function of firebase
     - canceled due to insufficient remaining time and corresponding features.
     
-- #### data visualizatin ~~carousel~~ option(Tao Xu) :heavy_check_mark:
+- #### data visualization ~~carousel~~ option(Tao Xu) :heavy_check_mark:
     - show different data visualization charts when that area is not focused.
     
 

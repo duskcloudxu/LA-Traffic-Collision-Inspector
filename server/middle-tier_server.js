@@ -4,6 +4,8 @@ var cors = require('cors');
 var app = express();
 var sudoData = [];
 var isFirstTime = true;
+var admin = require("firebase-admin");
+var serviceAccount = require("./los-angeles-traffic-collisions-firebase-adminsdk-pjnxq-ade5c7a2a5.json");
 app.use(cors());
 app.get('/', function (req, res) {
     res.send('Hello World');
@@ -42,13 +44,13 @@ app.get("/getDataWithFilter", (req, res) => {
                     return false;
 
             }
-            if (dataIndex === "Address"||dataIndex==="Area Name"||dataIndex==="Victim Descent") {
+            if (dataIndex === "Address" || dataIndex === "Area Name" || dataIndex === "Victim Descent") {
                 let pattern = query[dataIndex];
                 if (item[dataIndex].toLowerCase().indexOf(pattern.toLowerCase()) == -1) {
                     return false;
                 }
             }
-            if (dataIndex === "Census Tracts"||dataIndex==="DRNumber"||dataIndex==="Time Occurred")
+            if (dataIndex === "Census Tracts" || dataIndex === "DRNumber" || dataIndex === "Time Occurred")
                 if (item[dataIndex] < query[dataIndex][0] || item[dataIndex] > query[dataIndex][1])
                     return false;
 
@@ -65,14 +67,23 @@ app.get("/getDataWithFilter", (req, res) => {
 
 
 var server = app.listen(8081, function () {
+
     var host = server.address().address;
     var port = server.address().port;
-    fs.readFile("./testData.json", (err, data) => {
-        if (!err) {
-            sudoData = JSON.parse(data);
-        }
-        else {
-            console.log("error in reading Data");
-        }
-    })
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://los-angeles-traffic-collisions.firebaseio.com"
+    });
+    let db = admin.firestore();
+    let dataRef = db.collection('data');
+    dataRef.get()
+        .then(snapshot => {
+            snapshot.forEach(doc => {
+                sudoData.push(doc.data());
+            });
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+
 })
