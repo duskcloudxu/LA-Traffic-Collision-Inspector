@@ -5,7 +5,7 @@ var app = express();
 var sudoData = [];
 var isFirstTime = true;
 var admin = require("firebase-admin");
-var serviceAccount = require("./los-angeles-traffic-collisions-firebase-adminsdk-pjnxq-ade5c7a2a5.json");
+var serviceAccount = require("./los-angeles-traffic-collisions-firebase-adminsdk-pjnxq-7500f1ee22.json");
 app.use(cors());
 app.get('/', function (req, res) {
     res.send('Hello World');
