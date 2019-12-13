@@ -109,4 +109,5 @@ The build is minified and the filenames include the hashes.<br>
 
 ## preview
 
-![midtermPresentation](assets/midtermPresentation.gif)
+![midtermPresentation](assets/raw.gif)
+

@@ -22,12 +22,6 @@ app.get('/getDataIndex/:index', function (req, res) {
 })
 
 app.get("/getDataWithFilter", (req, res) => {
-    let flag = true;
-    if (isFirstTime)
-        for (let i = 0; i < 1000; i++) {
-            fs.readFileSync("./testData.json");
-        }
-    isFirstTime = false;
     let { query } = req.query;
     query = JSON.parse(query);
 
