@@ -1,5 +1,5 @@
 # Los Angeles Traffic Collision Viewer
-![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)![badage](https://img.shields.io/badge/React-v16.10.0-blue)![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)![badage](https://img.shields.io/badge/eCharts-v4.5.0-#8ea6b4)![badage](https://img.shields.io/badge/antd-v3.24.3-#46b3e6)
+![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)![badage](https://img.shields.io/badge/React-v16.10.0-blue)![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)![badage](https://img.shields.io/badge/eCharts-v4.5.0-8ea6b4)![badage](https://img.shields.io/badge/antd-v3.24.3-46b3e6)
 
 ## Introduction
 
