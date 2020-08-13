@@ -1,5 +1,5 @@
 # Los Angeles Traffic Collision Viewer
-![badage](https://img.shields.io/badge/firebase-v7.2.0-yellow)![badage](https://img.shields.io/badge/React-v16.10.0-blue)![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)![badage](https://img.shields.io/badge/eCharts-v4.5.0-8ea6b4)![badage](https://img.shields.io/badge/antd-v3.24.3-46b3e6)
+![badage](https://img.shields.io/badge/mongodb-v7.2.0-green)![badage](https://img.shields.io/badge/React-v16.10.0-blue)![badage](https://img.shields.io/badge/Redux-v7.1.1-purple)![badage](https://img.shields.io/badge/eCharts-v4.5.0-8ea6b4)![badage](https://img.shields.io/badge/antd-v3.24.3-46b3e6)![badage](https://img.shields.io/badge/redis-v6.0.0-red)![badage](https://img.shields.io/badge/lambda-amazon-yellow)
 
 ## Introduction
 
@@ -23,17 +23,6 @@ A web app based on dataset [“Los Angeles traffic collision data"](<https://www
 
 ## Npm Scripts
 
-Before start the front end, start server script first. This script is under `root/server` by the name `middle-tier_server.js`, use
-
-```powershell
-node ./middle-tier_server.js
-```
-
-or any tools based on NodeJS environment to start this backend server.
-
-
-
-In the project directory, you can run:
 
 
 ### `npm start`
