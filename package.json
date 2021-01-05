@@ -6,7 +6,7 @@
     "@ant-design/aliyun-theme": "0.0.4",
     "@ant-design/dark-theme": "^1.0.3",
     "antd": "^3.24.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-plugin-import": "^1.12.2",
     "cors": "^2.8.5",
     "customize-cra": "^0.8.0",
